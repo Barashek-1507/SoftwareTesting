@@ -16,9 +16,13 @@ public class RegistrationController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
-    public String registration(){
-        return "registration";
+    public RegistrationController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @GetMapping("/registration")
+    public String registration(Map<String, Object> model){
+        return "/registration";
     }
 
     @PostMapping("/registration")
@@ -29,6 +33,18 @@ public class RegistrationController {
             model.put("message", "User exist!");
             return "registration";
         }
+
+        if (user.getUsername().contains(" ") || user.getPassword().length() < 8){
+            if (user.getUsername().contains(" ")){
+                model.put("login", "Username mustn't contain space");
+            }
+
+            if (user.getUsername().length() < 8){
+                model.put("password", "Password must have a length of more than 8 symbols");
+            }
+            return "registration";
+        }
+
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));

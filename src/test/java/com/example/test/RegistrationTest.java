@@ -1,14 +1,13 @@
-package org.baggio.sweater.controller;
+package com.example.test;
 
-import org.baggio.sweater.model.User;
-import org.baggio.sweater.repository.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
+import com.example.test.controller.RegistrationController;
+import com.example.test.domain.User;
+import com.example.test.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.sql.DataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ class RegistrationTest {
     void checkConnection() {
         try {
             Connection connection = dataSource.getConnection();
-            assertEquals("sweater", connection.getCatalog());
+            assertEquals("test", connection.getCatalog());
         } catch (SQLException ignored) {
         }
     }
@@ -39,15 +38,15 @@ class RegistrationTest {
         User user = new User();
         user.setUsername("b v");
         user.setPassword("das ");
-        Registration registration = new Registration(repository);
+        RegistrationController registration = new RegistrationController(repository);
         Map<String, Object> map = new HashMap<>();
         registration.addUser(user,map);
         assertEquals("Password must have a length of more than 8 symbols", map.get("password"));
         assertEquals("Username mustn't contain space", map.get("login"));
 
         User user1 = new User();
-        user1.setUsername("dasasdasd");
-        user1.setPassword("dasdasdasjhdgjas");
+        user1.setUsername("bachromOnlyTheBest");
+        user1.setPassword("2353563737373");
         registration.addUser(user1, map);
 //        assertNull(map.get("added"));
         assertEquals("User has successfully been added", map.get("added"));
@@ -55,7 +54,7 @@ class RegistrationTest {
 
     @Test
     void checkDatabase() {
-        User user = repository.findByUsername("baggio");
+        User user = repository.findByUsername("lera");
         assertNotNull(user);
         User user1 = repository.findByUsername("chris");
         assertNull(user1);

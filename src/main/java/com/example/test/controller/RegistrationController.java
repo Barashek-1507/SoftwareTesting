@@ -49,6 +49,7 @@ public class RegistrationController {
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
+        model.put("added", "User has successfully been added");
         return "redirect:/login";
     }
 
